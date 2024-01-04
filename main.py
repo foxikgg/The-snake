@@ -1,6 +1,6 @@
 import pygame
-import random
 import sys
+import random
 
 # Инициализация Pygame
 pygame.init()
@@ -17,7 +17,7 @@ snake_pos = [[snake_size, 0]]
 direction = 'RIGHT'
 
 # Создание яблока
-apple_pos = [random.randint(0, win_size - snake_size) for _ in range(2)]
+apple_pos = [random.randrange(0, win_size, snake_size) for _ in range(2)]
 
 # Основной игровой цикл
 while True:
@@ -47,14 +47,19 @@ while True:
     elif direction == 'RIGHT':
         snake_pos.insert(0, [(snake_pos[0][0] + snake_size) % win_size, snake_pos[0][1]])
 
-    # Проверка на столкновение с яблоком6в
+    # Проверка на столкновение с яблоком
     if snake_pos[0] == apple_pos:
-        apple_pos = [random.randint(0, win_size - snake_size) for _ in range(2)]
+        apple_pos = [random.randrange(0, win_size, snake_size) for _ in range(2)]
     else:
         snake_pos.pop()
 
     # Очистка окна
     win.fill((0, 0, 0))
+
+    # Отрисовка сетки
+    for i in range(0, win_size, snake_size):
+        pygame.draw.lines(win, (125, 125, 125), True, ((i, 0), (i, win_size)), 1)
+        pygame.draw.lines(win, (125, 125, 125), True, ((0, i), (win_size, i)), 1)
 
     # Отрисовка змейки
     for pos in snake_pos:
