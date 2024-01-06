@@ -11,17 +11,13 @@ win = pygame.display.set_mode((win_size, win_size))
 
 # Установка размера и начального положения змейки
 snake_size = 40
-snake_pos = [[0, 0]]
+snake_pos = [[snake_size, 0]]
 
 # Установка направления движения змейки
 direction = 'RIGHT'
 
 # Создание яблока
 apple_pos = [random.randrange(0, win_size, snake_size) for _ in range(2)]
-
-# Создание кнопки "Заново"
-button_color = (200, 200, 200)  # Серый
-button_pos = [win_size - 200, win_size - 100, 150, 50]  # Позиция и размер кнопки
 
 # Основной игровой цикл
 while True:
@@ -40,13 +36,6 @@ while True:
                 direction = 'LEFT'
             elif event.key == pygame.K_RIGHT and direction != 'LEFT':
                 direction = 'RIGHT'
-        # Обработка нажатия на кнопку "Заново"
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            mouse_pos = pygame.mouse.get_pos()
-            if button_pos[0] < mouse_pos[0] < button_pos[0] + button_pos[2] and button_pos[1] < mouse_pos[1] < button_pos[1] + button_pos[3]:
-                snake_pos = [[0, 0]]
-                direction = 'RIGHT'
-                apple_pos = [random.randrange(0, win_size, snake_size) for _ in range(2)]
 
     # Обновление позиции змейки
     if direction == 'UP':
@@ -64,11 +53,6 @@ while True:
     else:
         snake_pos.pop()
 
-    # Проверка на столкновение с собственным телом
-    if snake_pos[0] in snake_pos[1:]:
-        snake_pos = [[snake_size, 0]]
-        direction = 'RIGHT'
-
     # Очистка окна
     win.fill((0, 0, 0))
 
@@ -83,9 +67,6 @@ while True:
 
     # Отрисовка яблока
     pygame.draw.rect(win, (255, 0, 0), pygame.Rect(apple_pos[0], apple_pos[1], snake_size, snake_size))
-
-    # Отрисовка кнопки "Заново"
-    pygame.draw.rect(win, button_color, pygame.Rect(*button_pos))
 
     # Обновление окна
     pygame.display.update()
