@@ -16,7 +16,7 @@ class Level2:
         pygame.init()
 
         self.win_size = 800
-        self.win = pygame.display.set_mode((1200, self.win_size))
+        self.win = pygame.display.set_mode((1280, self.win_size))
 
         self.snake_size = 40
         self.snake_pos = [[0, 0]]  # Позиция змейки
@@ -30,7 +30,6 @@ class Level2:
         self.mark = 0  # Очки
 
         self.btn_again_pos = [800, 50, 100, 50]  # Позиция кнопки "Заново"
-        self.btn_exit_pos = [800, 100, 100, 50]  # Позиция кнопки "Выход"
         self.btn_point_pos = [800, 0, 100, 50]  # Позиция кнопки с отображением очков
 
         self.dark = (0, 0, 0)
@@ -120,12 +119,7 @@ class Level2:
                     # Обработка нажатия кнопки "Заново"
                     if (self.btn_again_pos[0] < mouse_pos[0] < self.btn_again_pos[0] + self.btn_again_pos[2] and
                             self.btn_again_pos[1] < mouse_pos[1] < self.btn_again_pos[1] + self.btn_again_pos[3]):
-                        self.snake_pos = [[9, 9]]
-                        self.direction = 'RIGHT'
-                        self.apple_pos = [random.randrange(1, self.matrix_size-1) for _ in range(2)]
-                        self.matrix = self.generate_matrix()
-                        self.mark = 0
-                        print(f'Текущие очки: {self.mark}')
+                        Level2().run()
 
             # Обновление позиции змейки в соответствии с выбранным направлением
             if self.direction == 'UP':
@@ -158,13 +152,9 @@ class Level2:
             if self.matrix[self.snake_pos[0][0]][self.snake_pos[0][1]] == 1 or self.matrix[self.snake_pos[0][0]][self.snake_pos[0][1]] == 3:
                 pygame.quit()
 
-                restart = input("Начать заново? (да/нет): ")
-                if restart.lower() == "да":
-                    gamess = Level2()
-                    gamess.run()
+                gamess = Level2()
+                gamess.run()
 
-                else:
-                    sys.exit()
             else:
                 self.matrix[self.snake_pos[0][0]][self.snake_pos[0][1]] = 1
 
@@ -190,7 +180,6 @@ class Level2:
 
             # Отрисовка кнопок
             self.button("Заново", *self.btn_again_pos, self.dark, self.blue)
-            self.button("Выход", *self.btn_exit_pos, self.dark, self.red)
             self.button("Очки: " + str(len(self.snake_pos)-1), *self.btn_point_pos, self.dark, self.green)
 
             pygame.display.update()
