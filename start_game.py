@@ -32,13 +32,6 @@ class Game:
             image = image.convert_alpha()
         return image
 
-    def button(self, x, y, w, h, color, text, border_raduis, x_indent=40, y_indent=10, font_size=36, filled=0):
-        pygame.draw.rect(self.screen, color, pygame.Rect(x, y, w, h), filled, border_radius=border_raduis)
-        font = pygame.font.Font(None, font_size)
-        text = font.render(text, True, (0, 0, 0))
-        self.screen.blit(text, [x + (w // 2) - x_indent, y + (h // 2) - y_indent])
-        return pygame.Rect(x, y, w, h)
-
     def exit_button(self):
         self.button(self.width - 70, 30, 40, 40, (0, 0, 0), '[->', 20, x_indent=12,
                     y_indent=10, font_size=30, filled=1)
