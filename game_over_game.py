@@ -2,9 +2,11 @@ import os
 import sys
 import pygame
 
+import start_game
 import level1_snake
 import level2_snake
 import level3_snake
+
 
 
 class Game:
@@ -12,12 +14,11 @@ class Game:
         pygame.init()
         self.size = self.width, self.height = 1280, 720
         self.screen = pygame.display.set_mode(self.size)
-        self.background_image = pygame.image.load('data/level_menu.png')
+        self.background_image = pygame.image.load('data/game_over_game_menu.png')
         self.background_image = pygame.transform.scale(self.background_image, (self.width, self.height))
 
-        self.btn_level1_pos = [465, 325, 393, 54]
-        self.btn_level2_pos = [465, 404, 393, 54]
-        self.btn_level3_pos = [465, 483, 393, 54]
+        self.btn_play_pos = [473, 315, 335, 80]
+        self.btn_skin_pos = [476, 428, 329, 80]
 
         self.clock = pygame.time.Clock()
         self.running = True
@@ -42,12 +43,10 @@ class Game:
                     y_indent=10, font_size=30, filled=1)
         for event in pygame.event.get():
             self.Mouse_x, self.Mouse_y = pygame.mouse.get_pos()
-            if (event.type == pygame.MOUSEBUTTONDOWN and self.Mouse_x in range(self.width - 70,
-                                                                               self.width - 70 + 40) and
-                    self.Mouse_y in range(30, 30 + 40)):
+            if (event.type == pygame.MOUSEBUTTONDOWN and self.Mouse_x in range(self.width - 70, self.width - 70 + 40)
+                    and self.Mouse_y in range(30, 30 + 40)):
                 self.running = False
-
-    def run(self, color_snake, color_apple):
+    def run(self, wh_level, color_snake, color_apple):
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -55,16 +54,20 @@ class Game:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pos = pygame.mouse.get_pos()
 
-                    # Обработка нажатия кнопки "Играть"
-                    if (self.btn_level1_pos[0] < mouse_pos[0] < self.btn_level1_pos[0] + self.btn_level1_pos[2] and
-                            self.btn_level1_pos[1] < mouse_pos[1] < self.btn_level1_pos[1] + self.btn_level1_pos[3]):
-                        level1_snake.Level1(color_snake, color_apple).run()
-                    elif (self.btn_level2_pos[0] < mouse_pos[0] < self.btn_level2_pos[0] + self.btn_level2_pos[2] and
-                          self.btn_level2_pos[1] < mouse_pos[1] < self.btn_level2_pos[1] + self.btn_level2_pos[3]):
-                        level2_snake.Level2(color_snake, color_apple).run()
-                    elif (self.btn_level3_pos[0] < mouse_pos[0] < self.btn_level3_pos[0] + self.btn_level3_pos[2] and
-                          self.btn_level3_pos[1] < mouse_pos[1] < self.btn_level3_pos[1] + self.btn_level3_pos[3]):
-                        level3_snake.Level3(color_snake, color_apple).run()
+                    # Обработка нажатия кнопки "Заново"
+                    if (self.btn_play_pos[0] < mouse_pos[0] < self.btn_play_pos[0] + self.btn_play_pos[2] and
+                            self.btn_play_pos[1] < mouse_pos[1] < self.btn_play_pos[1] + self.btn_play_pos[3]):
+                        if wh_level == 'lvl1':
+                            level1_snake.Level1(color_snake, color_apple).run()
+                        elif wh_level == 'lvl2':
+                            level2_snake.Level2(color_snake, color_apple).run()
+                        elif wh_level == 'lvl3':
+                            level3_snake.Level3(color_snake, color_apple).run()
+
+                    # Обработка нажатия кнопки "Главная"
+                    elif (self.btn_skin_pos[0] < mouse_pos[0] < self.btn_skin_pos[0] + self.btn_skin_pos[2] and
+                          self.btn_skin_pos[1] < mouse_pos[1] < self.btn_skin_pos[1] + self.btn_skin_pos[3]):
+                        start_game.Game().run()
 
             self.screen.blit(self.background_image, (0, 0))
             pygame.display.flip()

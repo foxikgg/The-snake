@@ -2,7 +2,9 @@ import pygame
 import sys
 import random
 import os
+
 import start_game
+import game_over_game
 
 
 def load_image(name, colorkey=None):
@@ -48,7 +50,7 @@ class AnimatedSprite(pygame.sprite.Sprite):
 
 
 class Level1:
-    def __init__(self):
+    def __init__(self, clr_snake, clr_apple):
         pygame.init()
 
         # Установка размеров окна
@@ -69,6 +71,8 @@ class Level1:
         self.green = (16, 207, 117)
         self.red = (235, 87, 87)
         self.gray = (35, 62, 84)
+        self.color_snake = clr_snake
+        self.color_apple = clr_apple
 
         self.dark = (0, 0, 0)
         self.dark_yellow = (94, 80, 23)
@@ -174,9 +178,7 @@ class Level1:
 
             # Проверка на столкновение с собственным телом
             if self.snake_pos[0] in self.snake_pos[1:]:
-                self.snake_pos = [[self.snake_size, 0]]
-                self.direction = 'RIGHT'
-                self.mark = 0
+                game_over_game.Game().run('lvl1', self.color_snake, self.color_apple)
 
             # Очистка окна
             self.win.fill((0, 0, 0))
@@ -190,7 +192,7 @@ class Level1:
 
             # Отрисовка змейки
             for pos in self.snake_pos:
-                pygame.draw.rect(self.win, (0, 255, 0), pygame.Rect(pos[0], pos[1], self.snake_size,
+                pygame.draw.rect(self.win, self.color_snake, pygame.Rect(pos[0], pos[1], self.snake_size,
                                                                     self.snake_size),
                                  border_radius=10)
 
@@ -202,7 +204,7 @@ class Level1:
             self.button("Заново", *self.btn_again_pos, self.red, self.dark_red)
 
             # Отрисовка яблока
-            pygame.draw.rect(self.win, (255, 0, 0),
+            pygame.draw.rect(self.win, self.color_apple,
                              pygame.Rect(self.apple_pos[0], self.apple_pos[1], self.snake_size, self.snake_size),
                              border_radius=50)
             pygame.display.update()

@@ -17,7 +17,8 @@ class Game:
         self.btn_play_pos = [585, 450, 151, 36]
         self.btn_skin_pos = [587, 501, 148, 36]
 
-        self.color_snake = (255, 255, 255) #(16, 207, 117)
+        self.color_snake = (255, 135, 255) #(16, 207, 117)
+        self.color_apple = (255, 255, 0)
 
         self.clock = pygame.time.Clock()
         self.running = True
@@ -56,10 +57,10 @@ class Game:
                     # Обработка нажатия кнопки "Играть"
                     if (self.btn_play_pos[0] < mouse_pos[0] < self.btn_play_pos[0] + self.btn_play_pos[2] and
                             self.btn_play_pos[1] < mouse_pos[1] < self.btn_play_pos[1] + self.btn_play_pos[3]):
-                        level_choice_win.Game().run(self.color_snake)
+                        level_choice_win.Game().run(self.color_snake, self.color_apple)
                     elif (self.btn_skin_pos[0] < mouse_pos[0] < self.btn_skin_pos[0] + self.btn_skin_pos[2] and
                           self.btn_skin_pos[1] < mouse_pos[1] < self.btn_skin_pos[1] + self.btn_skin_pos[3]):
-                        skins_snake.Skin(self.color_snake).run()
+                        skins_snake.Skin(self.color_snake, self.color_apple).run()
 
             self.screen.blit(self.background_image, (0, 0))
             pygame.display.flip()
