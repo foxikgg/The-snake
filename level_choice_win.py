@@ -67,13 +67,6 @@ class Game:
                     self.Mouse_y in range(30, 30 + 40)):
                 self.running = False
 
-    '''def main_menu(self):
-        level1_button = self.button(*self.btn_level1_pos, self.green, 'Уровень 1', 30)
-        level2_button = self.button(*self.btn_level2_pos, self.blue, 'Уровень 2', 30)
-        level3_button = self.button(*self.btn_level3_pos, self.red, 'Уровень 3', 30)
-        self.exit_button()
-        return level1_button, level2_button, level3_button'''
-
     def run(self):
         while self.running:
             for event in pygame.event.get():

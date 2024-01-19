@@ -47,15 +47,7 @@ class Game:
             if (event.type == pygame.MOUSEBUTTONDOWN and self.Mouse_x in range(self.width - 70, self.width - 70 + 40)
                     and self.Mouse_y in range(30, 30 + 40)):
                 self.running = False
-
-    def main_menu(self):
-        play_button = self.button(*self.btn_play_pos, (16, 207, 117), 'Играть', 20)
-        skins_button = self.button(585, 500, 151, 36, (165, 166, 246), 'Скины', 20)
-        self.exit_button()
-        return play_button, skins_button
-
     def run(self):
-        play_button, skins_button = self.main_menu()
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
