@@ -12,8 +12,10 @@ class Game:
         self.screen = pygame.display.set_mode(self.size)
         self.background_image = pygame.image.load('data/main_menu.png')
         self.background_image = pygame.transform.scale(self.background_image, (self.width, self.height))
+
         self.btn_play_pos = [585, 450, 151, 36]
-        self.btn_skin_pos = [587, 511, 148, 36]
+        self.btn_skin_pos = [587, 501, 148, 36]
+
         self.clock = pygame.time.Clock()
         self.running = True
 
