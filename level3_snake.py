@@ -3,6 +3,8 @@ import sys
 import random
 import numpy as np
 
+import start_game
+
 
 class Level3:
     def __init__(self):
@@ -33,15 +35,22 @@ class Level3:
         self.btn_again_pos = [800, 50, 100, 50]  # Позиция кнопки "Заново"
         self.btn_point_pos = [800, 0, 100, 50]  # Позиция кнопки с отображением очков
 
-        self.dark = (0, 0, 0)
+        self.btn_point_pos = [800, 0, 100, 50]  # Позиция кнопки с отображением очков
+        self.btn_main_pos = [800, 50, 100, 50]  # Позиция кнопки "Главная"
+        self.btn_history_pos = [800, 100, 100, 50]  # Позиция кнопки "История"
+        self.btn_again_pos = [800, 150, 100, 50]  # Позиция кнопки "Заново"
+
         self.blue = (165, 166, 246)
+        self.yellow = (255, 218, 68)
         self.green = (16, 207, 117)
         self.red = (235, 87, 87)
+        self.gray = (35, 62, 84)
 
+        self.dark = (0, 0, 0)
+        self.dark_yellow = (94, 80, 23)
         self.dark_red = (158, 27, 36)
         self.dark_blue = (79, 79, 117)
         self.dark_green = (8, 105, 59)
-
     def generate_matrix(self):
         matrix = np.zeros((self.matrix_size, self.matrix_size), dtype=int)
 
@@ -115,12 +124,17 @@ class Level3:
                     elif event.key == pygame.K_RIGHT and self.direction != 'LEFT':
                         self.direction = 'RIGHT'
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    mouse_pos = pygame.mouse.get_pos()
+                        mouse_pos = pygame.mouse.get_pos()
 
-                    # Обработка нажатия кнопки "Заново"
-                    if (self.btn_again_pos[0] < mouse_pos[0] < self.btn_again_pos[0] + self.btn_again_pos[2] and
-                            self.btn_again_pos[1] < mouse_pos[1] < self.btn_again_pos[1] + self.btn_again_pos[3]):
-                        Level3().run()
+                        # Обработка нажатия кнопки "Заново"
+                        if (self.btn_again_pos[0] < mouse_pos[0] < self.btn_again_pos[0] + self.btn_again_pos[2] and
+                                self.btn_again_pos[1] < mouse_pos[1] < self.btn_again_pos[1] + self.btn_again_pos[3]):
+                            Level3().run()
+
+                        # Обработка нажатия кнопки "Главная"
+                        elif (self.btn_main_pos[0] < mouse_pos[0] < self.btn_main_pos[0] + self.btn_main_pos[2] and
+                              self.btn_main_pos[1] < mouse_pos[1] < self.btn_main_pos[1] + self.btn_main_pos[3]):
+                            start_game.Game().run()
 
 
             '''if self.snake_pos[0][1] == self.matrix_size - 1:
@@ -137,22 +151,26 @@ class Level3:
                 if (self.snake_pos[0][1] - 1) % self.matrix_size == 0 and len(self.snake_pos) > 1:
                     print(6573409)
                     self.snake_pos.pop()
-                self.snake_pos.insert(0, [self.snake_pos[0][0], (self.snake_pos[0][1] - 1) % self.matrix_size])
+                self.snake_pos.insert(0, [self.snake_pos[0][0], (self.snake_pos[0][1] - 1)
+                                          % self.matrix_size])
             elif self.direction == 'DOWN':
                 if (self.snake_pos[0][1] + 1) % self.matrix_size == 0 and len(self.snake_pos) > 1:
                     print(7890)
                     self.snake_pos.pop()
-                self.snake_pos.insert(0, [self.snake_pos[0][0], (self.snake_pos[0][1] + 1) % self.matrix_size])
+                self.snake_pos.insert(0, [self.snake_pos[0][0], (self.snake_pos[0][1] + 1)
+                                          % self.matrix_size])
             elif self.direction == 'LEFT':
                 if (self.snake_pos[0][0] - 1) % self.matrix_size == 0 and len(self.snake_pos) > 1:
                     print(123)
                     self.snake_pos.pop()
-                self.snake_pos.insert(0, [(self.snake_pos[0][0] - 1) % self.matrix_size, self.snake_pos[0][1]])
+                self.snake_pos.insert(0, [(self.snake_pos[0][0] - 1) % self.matrix_size,
+                                          self.snake_pos[0][1]])
             elif self.direction == 'RIGHT':
                 if (self.snake_pos[0][0] + 1) % self.matrix_size == 0 and len(self.snake_pos) > 1:
                     print(123456)
                     self.snake_pos.pop()
-                self.snake_pos.insert(0, [(self.snake_pos[0][0] + 1) % self.matrix_size, self.snake_pos[0][1]])
+                self.snake_pos.insert(0, [(self.snake_pos[0][0] + 1) % self.matrix_size,
+                                          self.snake_pos[0][1]])
 
             # Проверка столкновения с яблоком
             if self.snake_pos[0] == self.apple_pos:
@@ -189,8 +207,10 @@ class Level3:
 
             # Отрисовка сетки на игровом поле
             for i in range(0, self.win_size, self.snake_size):
-                pygame.draw.lines(self.win, (125, 125, 125), True, ((i, 0), (i, self.win_size)), 1)
-                pygame.draw.lines(self.win, (125, 125, 125), True, ((0, i), (self.win_size, i)), 1)
+                pygame.draw.lines(self.win, (125, 125, 125), True, ((i, 0),
+                                                                    (i, self.win_size)), 1)
+                pygame.draw.lines(self.win, (125, 125, 125), True, ((0, i),
+                                                                    (self.win_size, i)), 1)
 
             # Отрисовка змейки
             for pos in self.snake_pos:
@@ -212,8 +232,10 @@ class Level3:
                                                      self.snake_size))
 
             # Отрисовка кнопок
-            self.button("Заново", *self.btn_again_pos, self.dark, self.blue)
             self.button("Очки: " + str(len(self.snake_pos) - 1), *self.btn_point_pos, self.dark, self.green)
+            self.button("Главная", *self.btn_main_pos, self.blue, self.dark_blue)
+            self.button("История", *self.btn_history_pos, self.yellow, self.dark_yellow)
+            self.button("Заново", *self.btn_again_pos, self.red, self.dark_red)
 
             pygame.display.update()
 

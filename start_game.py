@@ -2,7 +2,7 @@ import os
 import sys
 import pygame
 
-import main
+import level_choice_win
 
 
 class Game:
@@ -40,7 +40,13 @@ class Game:
         return pygame.Rect(x, y, w, h)
 
     def exit_button(self):
-        self.button(self.width - 70, 30, 40, 40, (0, 0, 0), '[->', 20, x_indent=12, y_indent=10, font_size=30, filled=1)
+        self.button(self.width - 70, 30, 40, 40, (0, 0, 0), '[->', 20, x_indent=12,
+                    y_indent=10, font_size=30, filled=1)
+        for event in pygame.event.get():
+            self.Mouse_x, self.Mouse_y = pygame.mouse.get_pos()
+            if (event.type == pygame.MOUSEBUTTONDOWN and self.Mouse_x in range(self.width - 70, self.width - 70 + 40)
+                    and self.Mouse_y in range(30, 30 + 40)):
+                self.running = False
 
     def main_menu(self):
         play_button = self.button(*self.btn_play_pos, (16, 207, 117), 'Играть', 20)
@@ -60,7 +66,7 @@ class Game:
                     # Обработка нажатия кнопки "Играть"
                     if (self.btn_play_pos[0] < mouse_pos[0] < self.btn_play_pos[0] + self.btn_play_pos[2] and
                             self.btn_play_pos[1] < mouse_pos[1] < self.btn_play_pos[1] + self.btn_play_pos[3]):
-                        main.Game().run()
+                        level_choice_win.Game().run()
                     elif (self.btn_skin_pos[0] < mouse_pos[0] < self.btn_skin_pos[0] + self.btn_skin_pos[2] and
                           self.btn_skin_pos[1] < mouse_pos[1] < self.btn_skin_pos[1] + self.btn_skin_pos[3]):
                         print('Level_2()')  # Assuming Level_1 is another class like Game

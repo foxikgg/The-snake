@@ -2,6 +2,10 @@ import os
 import sys
 import pygame
 
+import level_choice_win
+import level1_snake
+import level2_snake
+import level3_snake
 
 
 class Game:
@@ -9,13 +13,25 @@ class Game:
         pygame.init()
         self.size = self.width, self.height = 1280, 720
         self.screen = pygame.display.set_mode(self.size)
-        self.background_image = pygame.image.load('data/main_menu.png')
+        self.background_image = pygame.image.load('data/level_menu.png')
         self.background_image = pygame.transform.scale(self.background_image, (self.width, self.height))
-        
-        self.btn_level1_pos = [585, 450, 151, 36]
-        self.btn_level2_pos = [585, 500, 151, 36]
-        self.btn_level3_pos = [585, 450, 151, 36]
-        
+
+        self.btn_level1_pos = [470, 325, 393, 54]
+        self.btn_level2_pos = [470, 390, 393, 54]
+        self.btn_level3_pos = [470, 455, 393, 54]
+
+        self.blue = (165, 166, 246)
+        self.yellow = (255, 218, 68)
+        self.green = (16, 207, 117)
+        self.red = (235, 87, 87)
+        self.gray = (35, 62, 84)
+
+        self.dark = (0, 0, 0)
+        self.dark_yellow = (94, 80, 23)
+        self.dark_red = (158, 27, 36)
+        self.dark_blue = (79, 79, 117)
+        self.dark_green = (8, 105, 59)
+
         self.clock = pygame.time.Clock()
         self.running = True
 
@@ -34,20 +50,27 @@ class Game:
             image = image.convert_alpha()
         return image
 
-    def button(self, x, y, w, h, color, text, border_raduis, x_indent=40, y_indent=10, font_size=36, filled=0):
-        pygame.draw.rect(self.screen, color, pygame.Rect(x, int(y), int(w), int(h)), filled, border_radius=border_raduis)
+    def button(self, x, y, w, h, color, text, border_raduis, x_indent=70, y_indent=10, font_size=42, filled=0):
+        pygame.draw.rect(self.screen, color, pygame.Rect(x, y, w, h), filled, border_radius=border_raduis)
         font = pygame.font.Font(None, font_size)
         text = font.render(text, True, (0, 0, 0))
         self.screen.blit(text, [x + (w // 2) - x_indent, y + (h // 2) - y_indent])
         return pygame.Rect(x, y, w, h)
 
     def exit_button(self):
-        self.button(self.width - 70, 30, 40, 40, (0, 0, 0), '[->', 20, x_indent=12, y_indent=10, font_size=30, filled=1)
+        self.button(self.width - 70, 30, 40, 40, (0, 0, 0), '[->', 20, x_indent=12,
+                    y_indent=10, font_size=30, filled=1)
+        for event in pygame.event.get():
+            self.Mouse_x, self.Mouse_y = pygame.mouse.get_pos()
+            if (event.type == pygame.MOUSEBUTTONDOWN and self.Mouse_x in range(self.width - 70,
+                                                                               self.width - 70 + 40) and
+                    self.Mouse_y in range(30, 30 + 40)):
+                self.running = False
 
     def main_menu(self):
-        level1_button = self.button(585, 450, 151, 36, (16, 207, 117), 'Уровень 1', 20)
-        level2_button = self.button(585, 500, 151, 36, 36, (165, 166, 246), 'Уровень 2', 20)
-        level3_button = self.button(585, 550, 151, 36, 36, (165, 166, 246), 'Уровень 3', 20)
+        level1_button = self.button(*self.btn_level1_pos, self.green, 'Уровень 1', 30)
+        level2_button = self.button(*self.btn_level2_pos, self.blue, 'Уровень 2', 30)
+        level3_button = self.button(*self.btn_level3_pos, self.red, 'Уровень 3', 30)
         self.exit_button()
         return level1_button, level2_button, level3_button
 
@@ -63,10 +86,13 @@ class Game:
                     # Обработка нажатия кнопки "Играть"
                     if (self.btn_level1_pos[0] < mouse_pos[0] < self.btn_level1_pos[0] + self.btn_level1_pos[2] and
                             self.btn_level1_pos[1] < mouse_pos[1] < self.btn_level1_pos[1] + self.btn_level1_pos[3]):
-                        pass
+                        level1_snake.Level1().run()
                     elif (self.btn_level2_pos[0] < mouse_pos[0] < self.btn_level2_pos[0] + self.btn_level2_pos[2] and
                           self.btn_level2_pos[1] < mouse_pos[1] < self.btn_level2_pos[1] + self.btn_level2_pos[3]):
-                        print('Level_2()')  # Assuming Level_1 is another class like Game
+                        level2_snake.Level2().run()
+                    elif (self.btn_level3_pos[0] < mouse_pos[0] < self.btn_level3_pos[0] + self.btn_level3_pos[2] and
+                          self.btn_level3_pos[1] < mouse_pos[1] < self.btn_level3_pos[1] + self.btn_level3_pos[3]):
+                        level3_snake.Level3().run()
 
             self.screen.blit(self.background_image, (0, 0))
             self.main_menu()

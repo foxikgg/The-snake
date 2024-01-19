@@ -149,16 +149,20 @@ class Level1:
             # Обновление позиции змейки
             if self.direction == 'UP':
                 self.snake_pos.insert(0,
-                                      [self.snake_pos[0][0], (self.snake_pos[0][1] - self.snake_size) % self.win_size])
+                                      [self.snake_pos[0][0], (self.snake_pos[0][1] - self.snake_size)
+                                       % self.win_size])
             elif self.direction == 'DOWN':
                 self.snake_pos.insert(0,
-                                      [self.snake_pos[0][0], (self.snake_pos[0][1] + self.snake_size) % self.win_size])
+                                      [self.snake_pos[0][0], (self.snake_pos[0][1] + self.snake_size)
+                                       % self.win_size])
             elif self.direction == 'LEFT':
                 self.snake_pos.insert(0,
-                                      [(self.snake_pos[0][0] - self.snake_size) % self.win_size, self.snake_pos[0][1]])
+                                      [(self.snake_pos[0][0] - self.snake_size) % self.win_size,
+                                       self.snake_pos[0][1]])
             elif self.direction == 'RIGHT':
                 self.snake_pos.insert(0,
-                                      [(self.snake_pos[0][0] + self.snake_size) % self.win_size, self.snake_pos[0][1]])
+                                      [(self.snake_pos[0][0] + self.snake_size) % self.win_size,
+                                       self.snake_pos[0][1]])
 
             # Проверка на столкновение с яблоком
             if self.snake_pos[0] == self.apple_pos:
@@ -179,12 +183,15 @@ class Level1:
 
             # Отрисовка сетки
             for i in range(0, self.win_size, self.snake_size):
-                pygame.draw.lines(self.win, (125, 125, 125), True, ((i, 0), (i, self.win_size)), 1)
-                pygame.draw.lines(self.win, (125, 125, 125), True, ((0, i), (self.win_size, i)), 1)
+                pygame.draw.lines(self.win, (125, 125, 125), True, ((i, 0),
+                                                                    (i, self.win_size)), 1)
+                pygame.draw.lines(self.win, (125, 125, 125), True, ((0, i),
+                                                                    (self.win_size, i)), 1)
 
             # Отрисовка змейки
             for pos in self.snake_pos:
-                pygame.draw.rect(self.win, (0, 255, 0), pygame.Rect(pos[0], pos[1], self.snake_size, self.snake_size),
+                pygame.draw.rect(self.win, (0, 255, 0), pygame.Rect(pos[0], pos[1], self.snake_size,
+                                                                    self.snake_size),
                                  border_radius=10)
 
             # Отрисовка кнопок
