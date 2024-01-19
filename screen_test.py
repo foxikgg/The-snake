@@ -5,8 +5,6 @@ from PyQt6.QtCore import Qt
 import level1_snake
 import level2_snake
 import level3_snake
-import main
-
 
 
 class GameWindow(QWidget):

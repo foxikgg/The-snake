@@ -2,9 +2,7 @@ import pygame
 import sys
 import random
 import os
-
-
-import pygame, os, sys
+import start_game
 
 
 def load_image(name, colorkey=None):
@@ -61,14 +59,19 @@ class Level1:
         self.snake_size = 40
         self.snake_pos = [[0, 0]]
 
-        self.btn_again_pos = [800, 50, 100, 50]  # Позиция кнопки "Заново"
         self.btn_point_pos = [800, 0, 100, 50]  # Позиция кнопки с отображением очков
+        self.btn_main_pos = [800, 50, 100, 50]  # Позиция кнопки "Главная"
+        self.btn_history_pos = [800, 100, 100, 50]  # Позиция кнопки "История"
+        self.btn_again_pos = [800, 150, 100, 50]  # Позиция кнопки "Заново"
 
-        self.dark = (0, 0, 0)
         self.blue = (165, 166, 246)
+        self.yellow = (255, 218, 68)
         self.green = (16, 207, 117)
         self.red = (235, 87, 87)
+        self.gray = (35, 62, 84)
 
+        self.dark = (0, 0, 0)
+        self.dark_yellow = (94, 80, 23)
         self.dark_red = (158, 27, 36)
         self.dark_blue = (79, 79, 117)
         self.dark_green = (8, 105, 59)
@@ -81,7 +84,6 @@ class Level1:
         self.mark = 0  # Количество собранных яблок
 
         self.dragon = AnimatedSprite(load_image("анимка.png"), 4, 2, 0, 0)
-
 
     def button(self, msg, x, y, w, h, ic, ac, action=None):
         mouse = pygame.mouse.get_pos()
@@ -115,7 +117,6 @@ class Level1:
             image = image.convert_alpha()
         return image
 
-
     def run(self):
         while True:
             for event in pygame.event.get():
@@ -140,15 +141,24 @@ class Level1:
                             self.btn_again_pos[1] < mouse_pos[1] < self.btn_again_pos[1] + self.btn_again_pos[3]):
                         Level1().run()
 
+                    # Обработка нажатия кнопки "Главная"
+                    elif (self.btn_main_pos[0] < mouse_pos[0] < self.btn_main_pos[0] + self.btn_main_pos[2] and
+                          self.btn_main_pos[1] < mouse_pos[1] < self.btn_main_pos[1] + self.btn_main_pos[3]):
+                        start_game.Game().run()
+
             # Обновление позиции змейки
             if self.direction == 'UP':
-                self.snake_pos.insert(0, [self.snake_pos[0][0], (self.snake_pos[0][1] - self.snake_size) % self.win_size])
+                self.snake_pos.insert(0,
+                                      [self.snake_pos[0][0], (self.snake_pos[0][1] - self.snake_size) % self.win_size])
             elif self.direction == 'DOWN':
-                self.snake_pos.insert(0, [self.snake_pos[0][0], (self.snake_pos[0][1] + self.snake_size) % self.win_size])
+                self.snake_pos.insert(0,
+                                      [self.snake_pos[0][0], (self.snake_pos[0][1] + self.snake_size) % self.win_size])
             elif self.direction == 'LEFT':
-                self.snake_pos.insert(0, [(self.snake_pos[0][0] - self.snake_size) % self.win_size, self.snake_pos[0][1]])
+                self.snake_pos.insert(0,
+                                      [(self.snake_pos[0][0] - self.snake_size) % self.win_size, self.snake_pos[0][1]])
             elif self.direction == 'RIGHT':
-                self.snake_pos.insert(0, [(self.snake_pos[0][0] + self.snake_size) % self.win_size, self.snake_pos[0][1]])
+                self.snake_pos.insert(0,
+                                      [(self.snake_pos[0][0] + self.snake_size) % self.win_size, self.snake_pos[0][1]])
 
             # Проверка на столкновение с яблоком
             if self.snake_pos[0] == self.apple_pos:
@@ -174,18 +184,20 @@ class Level1:
 
             # Отрисовка змейки
             for pos in self.snake_pos:
-                pygame.draw.rect(self.win, (0, 255, 0), pygame.Rect(pos[0], pos[1], self.snake_size, self.snake_size), border_radius=10)
+                pygame.draw.rect(self.win, (0, 255, 0), pygame.Rect(pos[0], pos[1], self.snake_size, self.snake_size),
+                                 border_radius=10)
 
             # Отрисовка кнопок
-            self.button("Заново", *self.btn_again_pos, self.dark, self.blue)
+
             self.button("Очки: " + str(len(self.snake_pos) - 1), *self.btn_point_pos, self.dark, self.green)
+            self.button("Главная", *self.btn_main_pos, self.blue, self.dark_blue)
+            self.button("История", *self.btn_history_pos, self.yellow, self.dark_yellow)
+            self.button("Заново", *self.btn_again_pos, self.red, self.dark_red)
 
             # Отрисовка яблока
-            pygame.draw.rect(self.win, (255, 0, 0), pygame.Rect(self.apple_pos[0], self.apple_pos[1], self.snake_size, self.snake_size),
+            pygame.draw.rect(self.win, (255, 0, 0),
+                             pygame.Rect(self.apple_pos[0], self.apple_pos[1], self.snake_size, self.snake_size),
                              border_radius=50)
             pygame.display.update()
-
+            all_sprites.draw(self.win)
             pygame.time.Clock().tick(10)  # Задержка
-
-# Запуск игры
-
