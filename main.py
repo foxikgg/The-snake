@@ -5,13 +5,12 @@ import pygame
 import level_choice_win
 
 
-
 class Game:
     def __init__(self):
         pygame.init()
         self.size = self.width, self.height = 1280, 720
         self.screen = pygame.display.set_mode(self.size)
-        self.background_image = pygame.image.load('data/main_menu.png')
+        self.background_image = pygame.image.load('data/level_menu.png')
         self.background_image = pygame.transform.scale(self.background_image, (self.width, self.height))
 
         self.btn_level1_pos = [539, 275, 260, 54]
