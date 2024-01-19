@@ -12,8 +12,11 @@ class Game:
         self.screen = pygame.display.set_mode(self.size)
         self.background_image = pygame.image.load('data/main_menu.png')
         self.background_image = pygame.transform.scale(self.background_image, (self.width, self.height))
-        self.level1_button_pos = [585, 450, 151, 36]
-        self.level2_button_pos = [585, 500, 151, 36]
+
+        self.btn_level1_pos = [539, 275, 260, 54]
+        self.btn_level2_pos = [539, 340, 260, 54]
+        self.btn_level3_pos = [539, 405, 260, 54]
+
         self.clock = pygame.time.Clock()
         self.running = True
 
@@ -32,7 +35,7 @@ class Game:
             image = image.convert_alpha()
         return image
 
-    def button(self, x, y, w, h, color, text, border_raduis, x_indent=40, y_indent=10, font_size=36, filled=0):
+    def button(self, x, y, w, h, color, text, border_raduis, x_indent=35, y_indent=5, font_size=36, filled=0):
         pygame.draw.rect(self.screen, color, pygame.Rect(x, y, w, h), filled, border_radius=border_raduis)
         font = pygame.font.Font(None, font_size)
         text = font.render(text, True, (0, 0, 0))
@@ -43,8 +46,8 @@ class Game:
         self.button(self.width - 70, 30, 40, 40, (0, 0, 0), '[->', 20, x_indent=12, y_indent=10, font_size=30, filled=1)
 
     def main_menu(self):
-        level1_button = self.button(*self.level1_button_pos, (16, 207, 117), 'Уровень 1', 20)
-        skins_button = self.button(585, 500, 151, 36, (165, 166, 246), 'Уровень 2', 20)
+        level1_button = self.button(*self.btn_level1_pos, (16, 207, 117), 'Уровень 1', 20)
+        skins_button = self.button(*self.btn_level2_pos, (165, 166, 246), 'Уровень 2', 20)
         self.exit_button()
         return level1_button, skins_button
 
@@ -58,11 +61,11 @@ class Game:
                     mouse_pos = pygame.mouse.get_pos()
 
                     # Обработка нажатия кнопки "Играть"
-                    if (self.level1_button_pos[0] < mouse_pos[0] < self.level1_button_pos[0] + self.level1_button_pos[2] and
-                            self.level1_button_pos[1] < mouse_pos[1] < self.level1_button_pos[1] + self.level1_button_pos[3]):
+                    if (self.btn_level1_pos[0] < mouse_pos[0] < self.btn_level1_pos[0] + self.btn_level1_pos[2] and
+                            self.btn_level1_pos[1] < mouse_pos[1] < self.btn_level1_pos[1] + self.btn_level1_pos[3]):
                         level_choice_win.Game().run()
-                    elif (self.level2_button_pos[0] < mouse_pos[0] < self.level2_button_pos[0] + self.level2_button_pos[2] and
-                          self.level2_button_pos[1] < mouse_pos[1] < self.level2_button_pos[1] + self.level2_button_pos[3]):
+                    elif (self.btn_level2_pos[0] < mouse_pos[0] < self.btn_level2_pos[0] + self.btn_level2_pos[2] and
+                          self.btn_level2_pos[1] < mouse_pos[1] < self.btn_level2_pos[1] + self.btn_level2_pos[3]):
                         print('Level_2()')  # Assuming Level_1 is another class like Game
 
             self.screen.blit(self.background_image, (0, 0))
