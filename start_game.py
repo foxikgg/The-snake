@@ -12,6 +12,7 @@ class Game:
         self.size = self.width, self.height = 1280, 720
         self.screen = pygame.display.set_mode(self.size)
         self.background_image = pygame.image.load('data/main_menu.png')
+        pygame.display.set_caption('Змейка: Главная')
         self.background_image = pygame.transform.scale(self.background_image, (self.width, self.height))
 
         self.btn_play_pos = [585, 450, 151, 36]

@@ -31,6 +31,7 @@ class Game:
         self.size = self.width, self.height = 1280, 720
         self.screen = pygame.display.set_mode(self.size)
         self.background_image = pygame.image.load('data/win_game_menu.png')
+        pygame.display.set_caption('Змейка: Победа')
         self.background_image = pygame.transform.scale(self.background_image, (self.width, self.height))
 
         self.btn_next_pos = [473, 233, 335, 80]

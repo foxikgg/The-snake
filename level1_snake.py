@@ -61,6 +61,7 @@ class Level1:
         # Установка размеров окна
         self.win_size = 800
         self.win = pygame.display.set_mode((1280, self.win_size))
+        pygame.display.set_caption('Змейка: Уровень 1')
 
         # Установка размера и начального положения змейки
         self.snake_size = 40

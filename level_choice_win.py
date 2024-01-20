@@ -13,6 +13,7 @@ class Game:
         self.size = self.width, self.height = 1280, 720
         self.screen = pygame.display.set_mode(self.size)
         self.background_image = pygame.image.load('data/level_menu.png')
+        pygame.display.set_caption('Змейка: Выбор уровня')
         self.background_image = pygame.transform.scale(self.background_image, (self.width, self.height))
 
         self.btn_level1_pos = [465, 325, 393, 54]

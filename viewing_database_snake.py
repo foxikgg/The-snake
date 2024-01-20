@@ -46,6 +46,9 @@ def print_table(table_name):
     model.setTable(table_name)
     model.select()
     view = QTableView()
+    view.setWindowTitle("Результаты")  # Установка названия окна
+    view.setFixedSize(210, 300)  # Установка размера окна
+    view.move(100, 100)
     view.setModel(model)
     view.show()
 
@@ -78,4 +81,3 @@ def tb_app(tbl_name, score, date):
         multiprocessing.Process(target=app.exec).start()
     except:
         pass
-

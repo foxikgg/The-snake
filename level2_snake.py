@@ -23,6 +23,7 @@ class Level2:
                 apple_check()
                 print('errooooor')
         pygame.init()
+        pygame.display.set_caption('Змейка: Уровень 2')
 
         self.win_size = 800
         self.win = pygame.display.set_mode((1280, self.win_size))
