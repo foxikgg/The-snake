@@ -7,6 +7,7 @@ import start_game
 import game_over_menu
 import win_game_skane
 
+import datetime
 import viewing_database_snake
 import multiprocessing
 
@@ -138,11 +139,19 @@ class Level2:
                         # Обработка нажатия кнопки "Заново"
                         if (self.btn_again_pos[0] < mouse_pos[0] < self.btn_again_pos[0] + self.btn_again_pos[2] and
                                 self.btn_again_pos[1] < mouse_pos[1] < self.btn_again_pos[1] + self.btn_again_pos[3]):
+                            qt_process = (
+                                multiprocessing.Process
+                                (target=viewing_database_snake.tb_app('level2', self.mark, datetime.date.today())))
+                            qt_process.start()
                             Level2(self.color_snake, self.color_apple).run()
 
                         # Обработка нажатия кнопки "Главная"
                         elif (self.btn_main_pos[0] < mouse_pos[0] < self.btn_main_pos[0] + self.btn_main_pos[2] and
                               self.btn_main_pos[1] < mouse_pos[1] < self.btn_main_pos[1] + self.btn_main_pos[3]):
+                            qt_process = (
+                                multiprocessing.Process
+                                (target=viewing_database_snake.tb_app('level2', self.mark, datetime.date.today())))
+                            qt_process.start()
                             start_game.Game(self.color_snake, self.color_apple).run()
 
                         # Обработка нажатия кнопки "История"
@@ -150,7 +159,7 @@ class Level2:
                               self.btn_history_pos[2] and
                               self.btn_history_pos[1] < mouse_pos[1] < self.btn_history_pos[1] +
                               self.btn_history_pos[3]):
-                            qt_process = multiprocessing.Process(target=viewing_database_snake.print_app('level1'))
+                            qt_process = multiprocessing.Process(target=viewing_database_snake.print_app('level2'))
                             qt_process.start()
 
             # Обновление позиции змейки в соответствии с выбранным направлением
@@ -187,6 +196,10 @@ class Level2:
             # Проверка столкновения с преградой или самой собой
             if (self.matrix[self.snake_pos[0][0]][self.snake_pos[0][1]] == 1 or
                     self.matrix[self.snake_pos[0][0]][self.snake_pos[0][1]] == 3):
+                qt_process = (
+                    multiprocessing.Process
+                    (target=viewing_database_snake.tb_app('level2', self.mark, datetime.date.today())))
+                qt_process.start()
                 game_over_menu.Game().run('lvl2', self.color_snake, self.color_apple)
 
             else:
@@ -195,6 +208,10 @@ class Level2:
             self.win.fill((0, 0, 0))
 
             if self.mark == 7:
+                qt_process = (
+                    multiprocessing.Process
+                    (target=viewing_database_snake.tb_app('level2', self.mark, datetime.date.today())))
+                qt_process.start()
                 win_game_skane.Game().run('lvl2', self.color_snake, self.color_apple)
 
             # Отрисовка сетки на игровом поле

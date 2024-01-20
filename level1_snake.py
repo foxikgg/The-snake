@@ -2,12 +2,12 @@ import pygame
 import sys
 import random
 import os
-import datetime
 
 import start_game
 import game_over_menu
 import win_game_skane
 
+import datetime
 import viewing_database_snake
 import multiprocessing
 
@@ -148,6 +148,10 @@ class Level1:
                     # Обработка нажатия кнопки "Заново"
                     if (self.btn_again_pos[0] < mouse_pos[0] < self.btn_again_pos[0] + self.btn_again_pos[2] and
                             self.btn_again_pos[1] < mouse_pos[1] < self.btn_again_pos[1] + self.btn_again_pos[3]):
+                        qt_process = (
+                            multiprocessing.Process
+                            (target=viewing_database_snake.tb_app('level1', self.mark, datetime.date.today())))
+                        qt_process.start()
                         Level1(self.color_snake, self.color_apple).run()
 
                     # Обработка нажатия кнопки "Главная"
@@ -195,9 +199,17 @@ class Level1:
 
             # Проверка на столкновение с собственным телом
             if self.snake_pos[0] in self.snake_pos[1:]:
+                qt_process = (
+                    multiprocessing.Process
+                    (target=viewing_database_snake.tb_app('level1', self.mark, datetime.date.today())))
+                qt_process.start()
                 game_over_menu.Game().run('lvl1', self.color_snake, self.color_apple)
 
             if self.mark == 5:
+                qt_process = (
+                    multiprocessing.Process
+                    (target=viewing_database_snake.tb_app('level1', self.mark, datetime.date.today())))
+                qt_process.start()
                 win_game_skane.Game().run('lvl1', self.color_snake, self.color_apple)
 
             # Очистка окна

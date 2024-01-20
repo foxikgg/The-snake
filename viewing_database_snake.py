@@ -65,13 +65,17 @@ def print_app(tbl_name):
 
 
 def tb_app(tbl_name, score, date):
-    app = QApplication([])
-    db = DatabaseManager('game_snake.db')
-    db.create_connection()
+    try:
+        app = QApplication([])
+        db = DatabaseManager('game_snake.db')
+        db.create_connection()
 
-    table_name = tbl_name
-    db.create_table(table_name)
-    db.add_data(table_name, score, date)
+        table_name = tbl_name
+        db.create_table(table_name)
+        db.add_data(table_name, score, date)
 
-    # Запуск QApplication в отдельном процессе
-    multiprocessing.Process(target=app.exec).start()
+        # Запуск QApplication в отдельном процессе
+        multiprocessing.Process(target=app.exec).start()
+    except:
+        pass
+

@@ -7,6 +7,7 @@ import start_game
 import game_over_menu
 import end_game_snake
 
+import datetime
 import viewing_database_snake
 import multiprocessing
 
@@ -138,11 +139,19 @@ class Level3:
                     # Обработка нажатия кнопки "Заново"
                     if (self.btn_again_pos[0] < mouse_pos[0] < self.btn_again_pos[0] + self.btn_again_pos[2] and
                             self.btn_again_pos[1] < mouse_pos[1] < self.btn_again_pos[1] + self.btn_again_pos[3]):
+                        qt_process = (
+                            multiprocessing.Process
+                            (target=viewing_database_snake.tb_app('level3', self.mark, datetime.date.today())))
+                        qt_process.start()
                         Level3(self.color_snake, self.color_apple).run()
 
                     # Обработка нажатия кнопки "Главная"
                     elif (self.btn_main_pos[0] < mouse_pos[0] < self.btn_main_pos[0] + self.btn_main_pos[2] and
                           self.btn_main_pos[1] < mouse_pos[1] < self.btn_main_pos[1] + self.btn_main_pos[3]):
+                        qt_process = (
+                            multiprocessing.Process
+                            (target=viewing_database_snake.tb_app('level3', self.mark, datetime.date.today())))
+                        qt_process.start()
                         start_game.Game(self.color_snake, self.color_apple).run()
 
                     # Обработка нажатия кнопки "История"
@@ -150,7 +159,7 @@ class Level3:
                           self.btn_history_pos[2] and
                           self.btn_history_pos[1] < mouse_pos[1] < self.btn_history_pos[1] +
                           self.btn_history_pos[3]):
-                        qt_process = multiprocessing.Process(target=viewing_database_snake.print_app('level1'))
+                        qt_process = multiprocessing.Process(target=viewing_database_snake.print_app('level3'))
                         qt_process.start()
 
             # Обновление позиции змейки в соответствии с выбранным направлением
@@ -199,6 +208,10 @@ class Level3:
             # Проверка столкновения с преградой или самой собой
             if (self.matrix[self.snake_pos[0][0]][self.snake_pos[0][1]] == 1
                     or self.matrix[self.snake_pos[0][0]][self.snake_pos[0][1]] == 3):
+                qt_process = (
+                    multiprocessing.Process
+                    (target=viewing_database_snake.tb_app('level3', self.mark, datetime.date.today())))
+                qt_process.start()
                 game_over_menu.Game().run('lvl3', self.color_snake, self.color_apple)
 
             else:
@@ -210,6 +223,10 @@ class Level3:
                 # self.snake_pos[-1].pop()
 
             if self.mark == 10:
+                qt_process = (
+                    multiprocessing.Process
+                    (target=viewing_database_snake.tb_app('level3', self.mark, datetime.date.today())))
+                qt_process.start()
                 end_game_snake.Game().run(self.color_snake, self.color_apple)
 
             self.win.fill((0, 0, 0))
