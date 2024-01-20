@@ -44,7 +44,7 @@ class DatabaseManager:
 
 
 def add_data_start():
-    db = DatabaseManager('game-snake.db')
+    db = DatabaseManager('game_snake.db')
     db.create_connection()
     db.create_table("level1")
     db.create_table("level2")

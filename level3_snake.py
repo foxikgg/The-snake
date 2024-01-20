@@ -4,10 +4,16 @@ import random
 import numpy as np
 
 import start_game
+import game_over_menu
+import end_game_snake
+
+import viewing_database_snake
+import multiprocessing
+
 
 
 class Level3:
-    def __init__(self):
+    def __init__(self, clr_snake, clr_apple):
         def apple_check():
             self.apple_pos = [random.randrange(1, self.matrix_size - 1) for _ in range(2)]
             if self.matrix[self.apple_pos[0]][self.apple_pos[1]] == 0:
@@ -23,6 +29,8 @@ class Level3:
 
         self.snake_size = 40
         self.snake_pos = [[0, 0]]  # Позиция змейки
+
+        self.color_snake, self.color_apple = clr_snake, clr_apple
 
         self.matrix_size = 20
         self.matrix = self.generate_matrix()  # Игровая матрица
@@ -51,6 +59,7 @@ class Level3:
         self.dark_red = (158, 27, 36)
         self.dark_blue = (79, 79, 117)
         self.dark_green = (8, 105, 59)
+
     def generate_matrix(self):
         matrix = np.zeros((self.matrix_size, self.matrix_size), dtype=int)
 
@@ -124,27 +133,25 @@ class Level3:
                     elif event.key == pygame.K_RIGHT and self.direction != 'LEFT':
                         self.direction = 'RIGHT'
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                        mouse_pos = pygame.mouse.get_pos()
+                    mouse_pos = pygame.mouse.get_pos()
 
-                        # Обработка нажатия кнопки "Заново"
-                        if (self.btn_again_pos[0] < mouse_pos[0] < self.btn_again_pos[0] + self.btn_again_pos[2] and
-                                self.btn_again_pos[1] < mouse_pos[1] < self.btn_again_pos[1] + self.btn_again_pos[3]):
-                            Level3().run()
+                    # Обработка нажатия кнопки "Заново"
+                    if (self.btn_again_pos[0] < mouse_pos[0] < self.btn_again_pos[0] + self.btn_again_pos[2] and
+                            self.btn_again_pos[1] < mouse_pos[1] < self.btn_again_pos[1] + self.btn_again_pos[3]):
+                        Level3(self.color_snake, self.color_apple).run()
 
-                        # Обработка нажатия кнопки "Главная"
-                        elif (self.btn_main_pos[0] < mouse_pos[0] < self.btn_main_pos[0] + self.btn_main_pos[2] and
-                              self.btn_main_pos[1] < mouse_pos[1] < self.btn_main_pos[1] + self.btn_main_pos[3]):
-                            start_game.Game().run()
+                    # Обработка нажатия кнопки "Главная"
+                    elif (self.btn_main_pos[0] < mouse_pos[0] < self.btn_main_pos[0] + self.btn_main_pos[2] and
+                          self.btn_main_pos[1] < mouse_pos[1] < self.btn_main_pos[1] + self.btn_main_pos[3]):
+                        start_game.Game(self.color_snake, self.color_apple).run()
 
-
-            '''if self.snake_pos[0][1] == self.matrix_size - 1:
-                print("1")
-            elif self.snake_pos[0][1] == self.matrix_size - 1:
-                    print("12")
-            elif self.snake_pos[0][0] == 0:
-                print("123")
-            elif self.snake_pos[0][0] == self.matrix_size - 1:
-                print("123")'''
+                    # Обработка нажатия кнопки "История"
+                    elif (self.btn_history_pos[0] < mouse_pos[0] < self.btn_history_pos[0] +
+                          self.btn_history_pos[2] and
+                          self.btn_history_pos[1] < mouse_pos[1] < self.btn_history_pos[1] +
+                          self.btn_history_pos[3]):
+                        qt_process = multiprocessing.Process(target=viewing_database_snake.print_app('level1'))
+                        qt_process.start()
 
             # Обновление позиции змейки в соответствии с выбранным направлением
             if self.direction == 'UP':
@@ -190,18 +197,20 @@ class Level3:
                 self.matrix[tail[0]][tail[1]] = 0
 
             # Проверка столкновения с преградой или самой собой
-            if self.matrix[self.snake_pos[0][0]][self.snake_pos[0][1]] == 1 or self.matrix[self.snake_pos[0][0]][
-                self.snake_pos[0][1]] == 3:
-                pygame.quit()
-                gamess = Level3()
-                gamess.run()
+            if (self.matrix[self.snake_pos[0][0]][self.snake_pos[0][1]] == 1
+                    or self.matrix[self.snake_pos[0][0]][self.snake_pos[0][1]] == 3):
+                game_over_menu.Game().run('lvl3', self.color_snake, self.color_apple)
 
             else:
                 self.matrix[self.snake_pos[0][0]][self.snake_pos[0][1]] = 1
+
             if (self.snake_pos[0][0] < 0 or self.snake_pos[0][0] >= self.matrix_size or
                     self.snake_pos[0][1] < 0 or self.snake_pos[0][1] >= self.matrix_size):
                 print(123)
                 # self.snake_pos[-1].pop()
+
+            if self.mark == 10:
+                end_game_snake.Game().run(self.color_snake, self.color_apple)
 
             self.win.fill((0, 0, 0))
 
@@ -214,20 +223,22 @@ class Level3:
 
             # Отрисовка змейки
             for pos in self.snake_pos:
-                pygame.draw.rect(self.win, (0, 255, 0),
+                pygame.draw.rect(self.win, self.color_snake,
                                  pygame.Rect(pos[0] * self.snake_size, pos[1] * self.snake_size, self.snake_size,
-                                             self.snake_size))
+                                             self.snake_size),
+                                 border_radius=10)
 
             # Отрисовка яблока
-            pygame.draw.rect(self.win, (255, 0, 0),
+            pygame.draw.rect(self.win, self.color_apple,
                              pygame.Rect(self.apple_pos[0] * self.snake_size, self.apple_pos[1] * self.snake_size,
-                                         self.snake_size, self.snake_size))
+                                         self.snake_size, self.snake_size),
+                             border_radius=50)
 
             # Отрисовка преграды
             for i in range(self.matrix_size):
                 for j in range(self.matrix_size):
                     if self.matrix[i][j] == 3:
-                        pygame.draw.rect(self.win, (0, 0, 255),
+                        pygame.draw.rect(self.win, self.dark_red,
                                          pygame.Rect(i * self.snake_size, j * self.snake_size, self.snake_size,
                                                      self.snake_size))
 

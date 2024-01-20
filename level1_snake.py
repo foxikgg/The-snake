@@ -2,9 +2,14 @@ import pygame
 import sys
 import random
 import os
+import datetime
 
 import start_game
-import game_over_game
+import game_over_menu
+import win_game_skane
+
+import viewing_database_snake
+import multiprocessing
 
 
 def load_image(name, colorkey=None):
@@ -143,12 +148,24 @@ class Level1:
                     # Обработка нажатия кнопки "Заново"
                     if (self.btn_again_pos[0] < mouse_pos[0] < self.btn_again_pos[0] + self.btn_again_pos[2] and
                             self.btn_again_pos[1] < mouse_pos[1] < self.btn_again_pos[1] + self.btn_again_pos[3]):
-                        Level1().run()
+                        Level1(self.color_snake, self.color_apple).run()
 
                     # Обработка нажатия кнопки "Главная"
                     elif (self.btn_main_pos[0] < mouse_pos[0] < self.btn_main_pos[0] + self.btn_main_pos[2] and
                           self.btn_main_pos[1] < mouse_pos[1] < self.btn_main_pos[1] + self.btn_main_pos[3]):
-                        start_game.Game().run()
+                        qt_process = (
+                            multiprocessing.Process
+                            (target=viewing_database_snake.tb_app('level1', self.mark, datetime.date.today())))
+                        qt_process.start()
+
+
+                        start_game.Game(self.color_snake, self.color_apple).run()
+
+                    # Обработка нажатия кнопки "История"
+                    elif (self.btn_history_pos[0] < mouse_pos[0] < self.btn_history_pos[0] + self.btn_history_pos[2] and
+                          self.btn_history_pos[1] < mouse_pos[1] < self.btn_history_pos[1] + self.btn_history_pos[3]):
+                        qt_process = multiprocessing.Process(target=viewing_database_snake.print_app('level1'))
+                        qt_process.start()
 
             # Обновление позиции змейки
             if self.direction == 'UP':
@@ -178,10 +195,13 @@ class Level1:
 
             # Проверка на столкновение с собственным телом
             if self.snake_pos[0] in self.snake_pos[1:]:
-                game_over_game.Game().run('lvl1', self.color_snake, self.color_apple)
+                game_over_menu.Game().run('lvl1', self.color_snake, self.color_apple)
+
+            if self.mark == 5:
+                win_game_skane.Game().run('lvl1', self.color_snake, self.color_apple)
 
             # Очистка окна
-            self.win.fill((0, 0, 0))
+            self.win.fill((255, 255, 255))
 
             # Отрисовка сетки
             for i in range(0, self.win_size, self.snake_size):
@@ -193,7 +213,7 @@ class Level1:
             # Отрисовка змейки
             for pos in self.snake_pos:
                 pygame.draw.rect(self.win, self.color_snake, pygame.Rect(pos[0], pos[1], self.snake_size,
-                                                                    self.snake_size),
+                                                                         self.snake_size),
                                  border_radius=10)
 
             # Отрисовка кнопок
